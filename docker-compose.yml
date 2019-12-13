@@ -6,4 +6,3 @@ services:
       - .:/usr/src/todo_app
     stdin_open: true
     tty: true
-
