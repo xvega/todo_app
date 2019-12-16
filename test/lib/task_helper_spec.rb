@@ -116,7 +116,7 @@ RSpec.describe 'TaskHelper' do
           test_class.instance_variable_set(:@current_user, uncompleted_task.user)
 
           expect do
-            test_class.update_task_status(uncompleted_task, 1024)
+            test_class.update_task_status(uncompleted_task, 999999)
           end.to raise_error(ArgumentError)
         end
       end
@@ -175,6 +175,85 @@ RSpec.describe 'TaskHelper' do
         allow(test_class).to receive(:filter_uncompleted_tasks).and_call_original
         test_class.instance_variable_set(:@current_user, user)
         expect(test_class.filter_uncompleted_tasks.count).to eq(1)
+      end
+    end
+  end
+
+  context 'input/output methods' do
+
+    let(:user) { FactoryBot.create(:user) }
+
+    describe '#tasks_empty?' do
+      it 'returns a string if there are no tasks' do
+        allow(test_class).to receive(:tasks_empty?).and_call_original
+        test_class.instance_variable_set(:@current_user, user)
+        expect(test_class.tasks_empty?).to eq('Create a task first')
+      end
+    end
+
+    describe '#task_selection' do
+
+      let(:task) { FactoryBot.create(:task, user_id: user.id) }
+
+      describe 'when the task id is valid' do
+        it 'returns a task' do
+          allow(test_class).to receive(:task_selection).and_call_original
+          allow(test_class).to receive(:user_input).and_return(task.id)
+          test_class.instance_variable_set(:@current_user, user)
+          expect(test_class.task_selection).to be_an_instance_of(Task)
+        end
+      end
+
+      describe 'when the task id is not valid' do
+        it 'returns nil' do
+          allow(test_class).to receive(:task_selection).and_call_original
+          allow(test_class).to receive(:user_input).and_return(999999)
+          test_class.instance_variable_set(:@current_user, user)
+          expect(test_class.task_selection).to eq(nil)
+        end
+      end
+    end
+
+    describe '#task_removal_input' do
+      describe 'when there are no tasks' do
+        it 'returns a message' do
+          allow(test_class).to receive(:task_removal_input).and_call_original
+          expect(test_class.task_removal_input(999999)).to eq('Please select a valid task ID')
+        end
+      end
+
+      describe 'when there are tasks to be removed' do
+
+        let(:task) { FactoryBot.create(:task, user_id: user.id) }
+
+        it 'returns a message' do
+          allow(test_class).to receive(:task_removal_input).and_call_original
+          expect(test_class.task_removal_input(task.id)).to eq('Please select a valid task ID')
+        end
+      end
+    end
+
+    describe '#task_creation_input' do
+      describe 'when the task is created successfully' do
+
+        let(:message) { "Created a task for user #{user.username}" }
+
+        it 'returns a message' do
+          allow(test_class).to receive(:user_input).and_return('any text')
+          test_class.instance_variable_set(:@current_user, user)
+          expect(test_class.task_creation_input).to eq(message)
+        end
+      end
+
+      describe 'when the task is not created' do
+
+        let(:message) { "Validation failed: Title can't be blank, Content can't be blank" }
+
+        it 'returns an error message' do
+          allow(test_class).to receive(:user_input).and_return(nil)
+          test_class.instance_variable_set(:@current_user, user)
+          expect(test_class.task_creation_input).to eq(message)
+        end
       end
     end
   end
