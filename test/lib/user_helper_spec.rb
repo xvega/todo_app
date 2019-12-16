@@ -40,6 +40,7 @@ RSpec.describe 'UserHelper' do
     let(:user) { FactoryBot.create(:user) }
 
     describe 'when a user can be created and logged in' do
+
       it 'creates a new user record' do
         allow(test_class).to receive(:create_user_and_login).and_call_original
         expect { test_class.create_user_and_login(user.username) }.to change(User, :count)

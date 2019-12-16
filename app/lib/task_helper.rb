@@ -1,5 +1,3 @@
-require 'byebug'
-
 module TaskHelper
 
   def create_task(task_id)

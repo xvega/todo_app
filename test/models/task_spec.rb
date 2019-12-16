@@ -33,5 +33,10 @@ RSpec.describe Task do
       task.content = nil
       expect(task).to_not be_valid
     end
+
+    it 'cannot be created without a user' do
+      task.user_id = nil
+      expect(task).to_not be_valid
+    end
   end
 end

@@ -61,6 +61,7 @@ RSpec.describe 'TaskHelper' do
     describe '#select_task' do
 
       describe 'when there is a current_user' do
+
         it 'returns the user task' do
           allow(test_class).to receive(:select_task).and_call_original
           test_class.instance_variable_set(:@current_user, user)
@@ -69,6 +70,7 @@ RSpec.describe 'TaskHelper' do
       end
 
       describe 'when there is no current_user' do
+
         it 'returns nil' do
           allow(test_class).to receive(:select_task).and_call_original
           test_class.instance_variable_set(:@current_user, nil)
@@ -108,6 +110,7 @@ RSpec.describe 'TaskHelper' do
       end
 
       describe 'with an invalid status' do
+
         it 'raises an error' do
           allow(test_class).to receive(:update_task_status).and_call_original
           test_class.instance_variable_set(:@current_user, uncompleted_task.user)
@@ -158,6 +161,7 @@ RSpec.describe 'TaskHelper' do
     let!(:completed_task_three) { FactoryBot.create(:completed_task_three, user_id: user.id) }
 
     describe '#filter_completed_tasks' do
+
       it 'gets the completed tasks' do
         allow(test_class).to receive(:filter_completed_tasks).and_call_original
         test_class.instance_variable_set(:@current_user, user)
