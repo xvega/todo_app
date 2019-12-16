@@ -15,7 +15,7 @@ module UserHelper
         p "User #{@current_user.username} created successfully!"
         log_in(@current_user.username)
       end
-      p "Logged as #{@current_user.username} "
+      p "Logged as #{@current_user.username} until you quit the app and select a different user"
       @current_user
     rescue ActiveRecord::RecordInvalid => e
       puts e.message

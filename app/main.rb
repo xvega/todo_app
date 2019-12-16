@@ -68,7 +68,7 @@ class Main
         when '1'
           p username_input_msg
           @current_user = log_in(user_input)
-          p @current_user.nil? ? invalid_user_msg : "Logged as #{@current_user.username}"
+          p @current_user.nil? ? invalid_user_msg : "Logged as #{@current_user.username} until you quit the app and select a different user"
         when '2'
           p username_input_msg
           username = user_input
