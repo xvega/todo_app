@@ -6,8 +6,4 @@ FactoryBot.define do
   factory :user do
     username { generate :username }
   end
-
-  factory :user_two, class: 'User' do
-    username { generate :username }
-  end
 end
